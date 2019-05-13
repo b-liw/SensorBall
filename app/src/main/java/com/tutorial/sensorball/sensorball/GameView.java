@@ -102,7 +102,9 @@ public class GameView extends SurfaceView implements Runnable, SensorEventListen
             paint.setColor(0xFF00FF00);
             canvas.drawCircle(playerBall.getX(), playerBall.getY(), playerBall.getRadius(), paint);
             paint.setColor(0xFF0000FF);
-            canvas.drawCircle(scorePoint.getX(), scorePoint.getY(), scorePoint.getRadius(), paint);
+            if (scorePoint.isActive()) {
+                canvas.drawCircle(scorePoint.getX(), scorePoint.getY(), scorePoint.getRadius(), paint);
+            }
             paint.setColor(0xFFFF0000);
             paint.setTextAlign(Paint.Align.LEFT);
             paint.setTextSize(50);
@@ -121,14 +123,12 @@ public class GameView extends SurfaceView implements Runnable, SensorEventListen
 
     private void update() {
         playerBall.update();
-        if (!scorePoint.isActive()) {
-            createNewScorePoint();
-        } else {
-            if (checkCollisionWithScorePoint()) {
+            if (scorePoint.isActive() && checkCollisionWithScorePoint()) {
                 scorePoint.setActive(false);
                 score+=2;
+                createNewScorePoint();
+                scorePoint.setActive(true);
             }
-        }
         while (triangleList.size() < NUMBER_OF_OBSTACLES) {
             createNewObstacle(150);
         }
@@ -145,15 +145,14 @@ public class GameView extends SurfaceView implements Runnable, SensorEventListen
         }
 
         if (timeLeft <= 0) {
-            isPlaying = false;
             timeLeft = 0;
+            saveScore(score);
             ((Activity) context).runOnUiThread(new Runnable() {
                 public void run() {
                     showEndGameDialog("Game Over", "Your score: " + score);
                 }
             });
-
-            saveScore(score);
+            isPlaying = false;
         }
 
     }
@@ -270,8 +269,8 @@ public class GameView extends SurfaceView implements Runnable, SensorEventListen
 
     public void createNewScorePoint() {
         boolean created = false;
-        boolean foundCollision = false;
         while (!created) {
+            boolean foundCollision = false;
             int x = rand((int) scorePoint.getRadius(), ((int) (maxX - scorePoint.getRadius())));
             int y = rand(100, (int) (maxY - scorePoint.getRadius()));
             scorePoint.setX(x);
