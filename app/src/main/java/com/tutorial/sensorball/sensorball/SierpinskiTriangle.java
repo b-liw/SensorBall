@@ -47,9 +47,9 @@ public class SierpinskiTriangle {
         path.lineTo(x1, y1);
         path.lineTo(x2, y2);
 
-        sierpinski(path, n-1, x0, y0, size / 2);
-        sierpinski(path, n-1, (x0 + x1) / 2, (y0 + y1) / 2, size / 2);
-        sierpinski(path, n-1, (x0 + x2) / 2, (y0 + y2) / 2, size / 2);
+        sierpinski(path, n - 1, x0, y0, size / 2);
+        sierpinski(path, n - 1, (x0 + x1) / 2, (y0 + y1) / 2, size / 2);
+        sierpinski(path, n - 1, (x0 + x2) / 2, (y0 + y2) / 2, size / 2);
     }
 
     public Path getPath() {

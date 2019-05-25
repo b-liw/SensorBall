@@ -29,14 +29,14 @@ public class PlayerBall implements Ball {
     public void update() {
         xv += xa * speed;
         yv += ya * speed;
-        float xS = (xv/2);
-        float yS = (yv/2);
+        float xS = (xv / 2);
+        float yS = (yv / 2);
 
         x += xS;
         y -= yS;
 
         if (x + radius > maxX) {
-            x = maxX -radius;
+            x = maxX - radius;
             xa *= -1;
             xv /= 10;
         } else if (x < radius) {

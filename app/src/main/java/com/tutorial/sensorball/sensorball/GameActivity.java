@@ -3,8 +3,8 @@ package com.tutorial.sensorball.sensorball;
 import android.graphics.Point;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.KeyEvent;
 
@@ -23,7 +23,7 @@ public class GameActivity extends AppCompatActivity {
         display.getSize(point);
         gameView = new GameView(this, point.x, point.y);
         setContentView(gameView);
-        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magnetometer = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
     }

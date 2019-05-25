@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import static com.tutorial.sensorball.sensorball.Utils.rand;
 
 public class GameView extends SurfaceView implements Runnable, SensorEventListener {
 
@@ -108,7 +107,7 @@ public class GameView extends SurfaceView implements Runnable, SensorEventListen
             paint.setColor(0xFFFF0000);
             paint.setTextAlign(Paint.Align.LEFT);
             paint.setTextSize(50);
-            canvas.drawText("Score: " + score + ", time left: " + timeLeft,0, 50, paint);
+            canvas.drawText("Score: " + score + ", time left: " + timeLeft, 0, 50, paint);
             paint.setStrokeWidth(3);
             paint.setPathEffect(null);
             paint.setColor(Color.YELLOW);
@@ -123,12 +122,12 @@ public class GameView extends SurfaceView implements Runnable, SensorEventListen
 
     private void update() {
         playerBall.update();
-            if (scorePoint.isActive() && checkCollisionWithScorePoint()) {
-                scorePoint.setActive(false);
-                score+=2;
-                createNewScorePoint();
-                scorePoint.setActive(true);
-            }
+        if (scorePoint.isActive() && checkCollisionWithScorePoint()) {
+            scorePoint.setActive(false);
+            score += 2;
+            createNewScorePoint();
+            scorePoint.setActive(true);
+        }
         while (triangleList.size() < NUMBER_OF_OBSTACLES) {
             createNewObstacle(150);
         }
@@ -137,7 +136,7 @@ public class GameView extends SurfaceView implements Runnable, SensorEventListen
 
         while (trianglesIterator.hasNext()) {
             SierpinskiTriangle triangle = trianglesIterator.next();
-            if(checkCollisionBallAndTriangle(playerBall, triangle)) {
+            if (checkCollisionBallAndTriangle(playerBall, triangle)) {
                 score--;
                 timeLeft--;
                 trianglesIterator.remove();
@@ -189,7 +188,7 @@ public class GameView extends SurfaceView implements Runnable, SensorEventListen
             boolean foundCollision = false;
             int x = rand(100, maxX - size);
             int y = rand(100, maxY - size);
-            final SierpinskiTriangle sierpinskiTriangle = new SierpinskiTriangle(rand(1,4), x, y, size);
+            final SierpinskiTriangle sierpinskiTriangle = new SierpinskiTriangle(rand(1, 4), x, y, size);
 
             for (int i = 0; i < triangleList.size() && !foundCollision; i++) {
                 SierpinskiTriangle triangle = triangleList.get(i);
@@ -297,14 +296,14 @@ public class GameView extends SurfaceView implements Runnable, SensorEventListen
     }
 
     private boolean checkCollisionBallAndTriangle(Ball ball, SierpinskiTriangle triangle) {
-            Region clip = new Region(0, 0, maxX, maxY);
+        Region clip = new Region(0, 0, maxX, maxY);
 
-            Region region1 = new Region();
-            region1.setPath(triangle.getPath(), clip);
-            Region region2 = new Region();
-            Path path = new Path();
-            path.addCircle(ball.getX(), ball.getY(), ball.getRadius(), Path.Direction.CW);
-            region2.setPath(path, clip);
+        Region region1 = new Region();
+        region1.setPath(triangle.getPath(), clip);
+        Region region2 = new Region();
+        Path path = new Path();
+        path.addCircle(ball.getX(), ball.getY(), ball.getRadius(), Path.Direction.CW);
+        region2.setPath(path, clip);
 
         return !region1.quickReject(region2) && region1.op(region2, Region.Op.INTERSECT);
     }
@@ -323,5 +322,9 @@ public class GameView extends SurfaceView implements Runnable, SensorEventListen
 
     private double distanceBetweenPoints(float x1, float y1, float x2, float y2) {
         return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+    }
+
+    public static int rand(int min, int max) {
+        return min + (int) (Math.random() * ((max - min) + 1));
     }
 }
